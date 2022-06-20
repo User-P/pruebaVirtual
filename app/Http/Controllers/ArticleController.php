@@ -14,7 +14,10 @@ class ArticleController extends Controller
      */
     public function index()
     {
-        //
+        //traer ultimos 10 articulos
+        $articles = Article::orderBy('id', 'desc')->paginate(10);
+        return $articles;
+        return view('articles.index', compact('articles'));
     }
 
     /**
