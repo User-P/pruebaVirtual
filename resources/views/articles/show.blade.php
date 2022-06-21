@@ -5,32 +5,22 @@
         </h2>
     </x-slot>
 
-    <div class="py-12">
-        <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-            <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-                <div class="p-6 bg-white border-b border-gray-200">
-                    <div class="max-w-2xl mx-auto bg-white p-16">
+    <!-- component -->
+    <div class="container min-w-full">
+        <div class="grid grid-cols-1 md:grid-cols-2">
+            <div class="hidden bg-slate-500 md:block">
+                <img class="h-auto bg-cover bg-center bg-no-repeat" src={{Storage::url($article->image->url)}}
+                alt={{$article->title}} />
+            </div>
+            <div class="mt-10">
 
-                        <div class="flex justify-between items-center">
-                            <div class="flex-1">
-                                <h3 class="text-lg leading-6 font-medium text-gray-900">
-                                    {{$article->title}}
-                                </h3>
-                                <p class="mt-1 text-base leading-6 text-gray-500">
-                                    {{$article->created_at}}
-                                </p>
-                            </div>
-                            {{-- mostrar el content y la imagen del articulo --}}
-                            <div class="flex-1">
-                                <img class="w-full h-auto object-cover" src={{Storage::url($article->image->url)}}
-                                alt={{$article->title}} />
-                                <p class="text-base leading-6 text-gray-500">
-                                    {{$article->content}}
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <div class="animate-fade-in-down mb-1 text-center text-lg text-sky-600">{{$article->title}}</div>
+                <div class="animate-fade-in-down mb-8 text-center text-lg text-sky-800">{{$article->user->name}}</div>
+                <blockquote>
+                    <p class="animate-fade-in-down mx-12 mb-9 text-center text-sm">
+                        {{$article->content}}
+                    </p>
+                </blockquote>
             </div>
         </div>
     </div>
