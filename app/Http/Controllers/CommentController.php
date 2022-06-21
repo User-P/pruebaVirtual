@@ -6,6 +6,7 @@ use App\Models\Article;
 use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 class CommentController extends Controller
 {
@@ -25,18 +26,27 @@ class CommentController extends Controller
             'commentable_type' => Article::class,
         ]);
 
-
         return redirect()->route('articles.show', $article->id);
     }
 
     public function response(Comment $comment, Request $request)
     {
-        $comment->comments()->create([
+
+        $new = $comment->comments()->create([
             'body' => $request->response,
             'user_id' => Auth::user()->id,
             'responseable_id' => $comment->id,
             'responseable_type' => Comment::class,
         ]);
+        if ($request->has('file')) {
+            $url = Storage::disk('public')->put('comments', $request->file('file'));
+
+            $new->file()->create([
+                'fileable_id' => $new->id,
+                'url' => $url,
+                'fileable_type' => Comment::class,
+            ]);
+        }
 
         return redirect()->route('articles.show', $comment->commentable_id);
     }

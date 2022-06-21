@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Article;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -69,6 +70,7 @@ class ArticleController extends Controller
      */
     public function show(Article $article)
     {
-        return view('articles.show', compact('article'));
+        $comments = $article->comments()->with('comments.file')->get();
+        return view('articles.show', compact('article', 'comments'));
     }
 }

@@ -29,7 +29,7 @@
             <div class="">
                 <h1 class="text-bold text-lg text-white">Comentarios:</h1>
 
-                @foreach ($article->comments as $comment)
+                @foreach ($comments as $comment)
                 <article class="flex mb-4 text-gray-800 ">
                     <div class="card flex-1 px-2">
                         <div class="card-body bg-gray-100 rounded-lg">
@@ -47,22 +47,41 @@
                                         <p><b>{{$response->user->name}}</b> {{$response->created_at}}</p>
                                         {{$response->body}}
                                     </div>
+                                    @if ($response->file)
+                                    <div class="card-footer">
+                                        <a href="{{Storage::url($response->file->url)}}" class="text-white">
+                                            <i class="fas fa-link"></i>
+                                            Descargar archivo adjunto
+                                        </a>
+                                    </div>
+                                    @endif
                                 </div>
                                 @endforeach
 
                             </div>
                             @endif
 
-                            <form action="{{route('response', $comment)}}" method="POST">
+                            <form action="{{route('response', $comment)}}" method="POST" enctype="multipart/form-data">
                                 @csrf
                                 <div class="flex justify-between mx-7 mt-2 ">
                                     <input type="text" name="response" class="w-full rounded-lg"
                                         placeholder="Escribe tu respuesta" />
+                                    <div class="flex justify-center">
+                                        <div class="mb-3 w-96">
+                                            <input
+                                                class="form-control
+                                            block
+                                            bg-white bg-clip-padding
+                                            border border-solid border-gray-300
+                                            rounded
+                                            focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+                                                type="file" id="formFile" name="file">
+                                        </div>
+                                    </div>
                                     <button type="submit"
                                         class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
                                         Responder
                                     </button>
-
                                 </div>
                             </form>
                         </div>
