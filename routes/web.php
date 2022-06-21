@@ -23,8 +23,9 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/articles/create', [ArticleController::class, 'create'])->name('articles.create');
     Route::post('/articles', [ArticleController::class, 'store'])->name('articles.store');
-    Route::get('article/{article}', [ArticleController::class, 'show'])->name('articles.show');
+    Route::get('/article/{article}', [ArticleController::class, 'show'])->name('articles.show');
     Route::post('/comments/{article}', [CommentController::class, 'store'])->name('comments.store');
+    Route::post('/response/{comment}', [CommentController::class, 'response'])->name('response');
 });
 
 

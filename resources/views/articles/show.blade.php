@@ -22,59 +22,67 @@
                     </p>
                 </blockquote>
 
-                <div>
-                    <h1 class="text-bold text-lg">Comentarios:</h1>
+            </div>
+        </div>
 
-                    @foreach ($article->comments as $comment)
-                    <article class="flex mb-4 text-gray-800">
-                        <div class="card flex-1">
-                            <div class="card-body bg-gray-100">
-                                <p><b>{{$comment->user->name}}</b></p>
-                                {{$comment->body}}
+        <div class="grid grid-cols-2 bg-gray-800">
+            <div class="">
+                <h1 class="text-bold text-lg text-white">Comentarios:</h1>
+
+                @foreach ($article->comments as $comment)
+                <article class="flex mb-4 text-gray-800 ">
+                    <div class="card flex-1 px-2">
+                        <div class="card-body bg-gray-100 rounded-lg">
+                            <p><b>{{$comment->user->name}}</b> {{$comment->created_at}}</p>
+                            {{$comment->body}}
+                        </div>
+                        <div class="card-footer">
+
+                            @if ($comment->comments->count() > 0)
+                            <div class="mt-2 text-sm-center">
+                                <h3 class="text-white">Respuestas:</h3>
+                                @foreach ($comment->comments as $response)
+                                <div class="card flex-1 px-7 mb-1">
+                                    <div class="card-body bg-gray-100 rounded-lg">
+                                        <p><b>{{$response->user->name}}</b> {{$response->created_at}}</p>
+                                        {{$response->body}}
+                                    </div>
+                                </div>
+                                @endforeach
+
                             </div>
-                            {{-- responder a el mensaje --}}
-                            <div class="card-footer">
-                                {{-- <a href="{{route('comments.response', $comment->id)}}"
-                                    class="text-blue-500">Responder</a> --}}
+                            @endif
 
-                                @if ($comment->responses->count() > 0)
-
-                                <div class="mt-2">
-                                    <h3 class="text-bold text-lg">Respuestas:</h3>
-                                    @foreach ($comment->responses as $response)
-                                    <article class="flex mb-4 text-gray-800">
-                                        <div class="card flex-1">
-                                            <div class="card-body bg-gray-100">
-                                                <p><b>{{$response->user->name}}</b></p>
-                                                {{$response->body}}
-                                            </div>
-                                        </div>
-                                    </article>
-                                    @endforeach
+                            <form action="{{route('response', $comment)}}" method="POST">
+                                @csrf
+                                <div class="flex justify-between mx-7 mt-2 ">
+                                    <input type="text" name="response" class="w-full rounded-lg"
+                                        placeholder="Escribe tu respuesta" />
+                                    <button type="submit"
+                                        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                        Responder
+                                    </button>
 
                                 </div>
-                                @endif
-
-                            </div>
+                            </form>
                         </div>
-                    </article>
+                    </div>
+                </article>
 
-                    @endforeach
-                </div>
-
-                <div class="flex justify-center">
-                    <form action="{{route('comments.store', $article)}}" method="POST">
-                        @csrf
-                        <div class="flex flex-col">
-                            <label for="body" class="text-sm">Comentario:</label>
-                            <textarea name="body" id="body" cols="30" rows="10" class="w-full bg-gray-100"></textarea>
-                            <button type="submit"
-                                class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-700">
-                                Comentar
-                            </button>
-
-                        </div>
-                    </form>
-                </div>
+                @endforeach
             </div>
-</x-app-layout>profile
+            <div class="flex justify-center">
+                <form action="{{route('comments.store', $article)}}" method="POST">
+                    @csrf
+                    <div class="flex flex-col">
+                        <label for="body" class="text-md text-white">Nuevo Comentario:</label>
+                        <textarea name="body" id="body" cols="60" rows="15" class="w-full bg-gray-100"></textarea>
+                        <button type="submit" class="bg-green-500 text-white px-4 py-2 rounded-full hover:bg-green-700">
+                            Comentar
+                        </button>
+
+                    </div>
+                </form>
+            </div>
+        </div>
+</x-app-layout>
